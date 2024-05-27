@@ -2,6 +2,7 @@
 	"name": "cron-visualizer",
 	"private": true,
 	"type": "module",
+	"homepage": "https://david-j-lee.github.io/cron-visualizer/",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
