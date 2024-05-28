@@ -2,9 +2,18 @@ import { useMemo } from "preact/hooks";
 import parser, { CronDate } from "cron-parser";
 import cronstrue from "cronstrue";
 import dayjs from "dayjs";
+import minMax from "dayjs/plugin/minMax";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { CronSettings } from "../components/CronSettingsInput";
+
+dayjs.extend(minMax);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const useCronVisualizer = (
   cronString: string,
+  cronSettings: CronSettings,
   timelineDate: dayjs.Dayjs
 ) => {
   return useMemo(() => {
@@ -22,7 +31,8 @@ export const useCronVisualizer = (
 
       const { isValid: isDateTimesValid, dateTimes } = getDateTimes(
         cronString,
-        start,
+        cronSettings.timeZone,
+        cronSettings.startDateTime?.tz(cronSettings.timeZone, true) || start,
         end
       );
       cronDateTimes = dateTimes;
@@ -37,7 +47,7 @@ export const useCronVisualizer = (
       humanReadableDescription,
       cronDateTimes,
     };
-  }, [cronString, timelineDate]);
+  }, [cronString, cronSettings, timelineDate]);
 };
 
 const getHumanReadableDescription = (cronString: string) => {
@@ -53,6 +63,7 @@ const getHumanReadableDescription = (cronString: string) => {
 
 const getDateTimes = (
   cronString: string,
+  cronTimeZone: string,
   start: dayjs.Dayjs,
   end: dayjs.Dayjs
 ) => {
@@ -65,6 +76,7 @@ const getDateTimes = (
   const options = {
     currentDate: start.toDate(),
     endDate: end.toDate(),
+    tz: cronTimeZone,
     iterator: true,
   };
 

@@ -1,3 +1,4 @@
+import { useCallback } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 
 // From: https://gist.github.com/EmadAdly/c32181b987937f15214615ad4c6a6024
@@ -166,6 +167,11 @@ const data = [
     zone: "Africa/Monrovia",
     utc: "(GMT)",
     name: "Monrovia",
+  },
+  {
+    zone: "UTC",
+    utc: "(UTC)",
+    name: "UTC",
   },
   {
     zone: "Europe/Amsterdam",
@@ -566,15 +572,31 @@ const data = [
 
 type Props = {
   value: string;
-  onChange: (event: JSX.TargetedEvent<HTMLSelectElement>) => void;
+  setValue: (value: string) => void;
 };
 
-export default function CronTimeZoneSelect({ value, onChange }: Props) {
+export default function CronTimeZoneSelect({ value, setValue }: Props) {
+  const handleOnChange = useCallback(
+    (event: JSX.TargetedEvent<HTMLSelectElement>) => {
+      setValue(event.currentTarget.value);
+    },
+    [setValue]
+  );
+
   return (
-    <select value={value} onChange={onChange} placeholder="Select a time zone">
+    <select
+      value={value}
+      onChange={handleOnChange}
+      placeholder="Select a time zone"
+    >
       <option value="" disabled selected>
         Select a time zone
       </option>
+      {!value || data.find((timeZone) => timeZone.zone === value) ? null : (
+        <option key={value} value={value}>
+          {value}
+        </option>
+      )}
       {data.map((timeZone) => (
         <option key={timeZone.zone} value={timeZone.zone}>
           {timeZone.utc} {timeZone.zone}

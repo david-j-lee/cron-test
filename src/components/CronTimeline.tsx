@@ -1,9 +1,8 @@
-import { useCallback, useMemo, useState } from "preact/hooks";
+import { useMemo, useState } from "preact/hooks";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import CronTimeZoneSelect from "./CronTimeZoneSelect";
-import { JSX } from "preact/jsx-runtime";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -28,13 +27,6 @@ export default function CronTimeline({ date, timeZones, dateTimes }: Props) {
     );
   }, [date, dateTimes, customTimeZone]);
 
-  const handleTimeZoneChange = useCallback(
-    (event: JSX.TargetedEvent<HTMLSelectElement>) => {
-      setCustomTimeZone(event.currentTarget.value);
-    },
-    [setCustomTimeZone]
-  );
-
   return (
     <div class="schedules">
       {cronSchedules &&
@@ -43,7 +35,7 @@ export default function CronTimeline({ date, timeZones, dateTimes }: Props) {
             {!cronSchedule.timeZone || cronSchedule.timeZoneEditable ? (
               <CronTimeZoneSelect
                 value={customTimeZone}
-                onChange={handleTimeZoneChange}
+                setValue={setCustomTimeZone}
               />
             ) : (
               <div class="timezone">
@@ -114,7 +106,7 @@ const getSchedule = (
       continue;
     }
 
-    const zonedCurrentHour = currentHour.tz(timeZone.zone).format("H");
+    const zonedCurrentHour = currentHour.tz(timeZone.zone);
 
     for (let i = 0; i < 24; i++) {
       const zonedHour = date.add(i, "hours").tz(timeZone.zone);
@@ -140,7 +132,7 @@ const getSchedule = (
           ? zonedHour.format("D")
           : zonedHour.format("A"),
         isStartOfDay: startOfDay,
-        isCurrentHour: zonedHourValue === zonedCurrentHour,
+        isCurrentHour: zonedHour.isSame(zonedCurrentHour, "hour"),
         scheduledDates: hourSchedule,
       });
     }

@@ -15,12 +15,13 @@ export default function CronInput({ value, setValue }: Props) {
   );
 
   return (
-    <input
-      class="cron-input"
-      value={value}
-      onInput={handleCronStringInput}
-      placeholder={"0 0/10 * * * ? *"}
-      autoFocus
-    />
+    <div class="cron-input">
+      <input
+        value={value}
+        onInput={handleCronStringInput}
+        placeholder={"0 0/10 * * * ? *"}
+        autoFocus
+      />
+    </div>
   );
 }

@@ -8,32 +8,44 @@ import CronReader from "./components/CronReader";
 import CronTimeline from "./components/CronTimeline";
 import { useCronVisualizer } from "./hooks/useCronVisualizer";
 import CronDateInput from "./components/CronDateInput";
+import CronSettingsInput, {
+  CronSettings,
+} from "./components/CronSettingsInput";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export default function App() {
+  const userTimeZone = useMemo(() => dayjs.tz.guess() ?? "UTC", []);
+  const timeZones = useMemo(() => [userTimeZone, "UTC"], [userTimeZone]);
+
   const [cronString, setCronString] = useState("");
+  const [cronSettings, setCronSettings] = useState<CronSettings>({
+    timeZone: userTimeZone,
+    startDateTime: null,
+  });
   const [timelineDateInput, setTimelineDateInput] = useState(
     dayjs().format("YYYY-MM-DD")
   );
 
-  const usersTimeZone = useMemo(() => dayjs.tz.guess() ?? "UTC", []);
-  const timeZones = useMemo(() => [usersTimeZone, "UTC"], [usersTimeZone]);
   const timelineDate = useMemo(() => {
     return dayjs
-      .tz(timelineDateInput, "YYYY-MM-DD", usersTimeZone)
+      .tz(timelineDateInput, "YYYY-MM-DD", userTimeZone)
       .startOf("day");
-  }, [timelineDateInput, usersTimeZone]);
+  }, [timelineDateInput, userTimeZone]);
 
   const { humanReadableDescription, cronDateTimes } = useCronVisualizer(
     cronString,
+    cronSettings,
     timelineDate
   );
 
   return (
     <>
-      <CronInput value={cronString} setValue={setCronString} />
+      <div class="cron-input-container">
+        <CronInput value={cronString} setValue={setCronString} />
+        <CronSettingsInput value={cronSettings} setValue={setCronSettings} />
+      </div>
       <CronReader description={humanReadableDescription} />
       <CronDateInput
         value={timelineDateInput}
