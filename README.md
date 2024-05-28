@@ -16,3 +16,4 @@ See it in action at [david-j-lee.github.io/cron-visualizer/](https://david-j-lee
 
 - [ ] Performance improvements
   - [ ] Debounce user inputs
+- [ ] Add dark and light theme selector
