@@ -6,7 +6,7 @@ $light-divider: #777;
 $dark-color: #f3f3f3;
 $dark-bg: #1a1a1a;
 $dark-input-bg: #080808;
-$dark-divider: #333;
+$dark-divider: #777;
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -80,6 +80,7 @@ button {
 
   button {
     margin: 8px 0;
+    padding: 8px 16px;
   }
 
   .cron-input {
@@ -141,7 +142,7 @@ button {
 
     select,
     .timezone {
-      width: 150px;
+      width: 120px;
       flex-shrink: 0;
       padding: 0;
       margin: 8px;
@@ -172,7 +173,6 @@ button {
         width: 1px;
         height: 32px;
         margin-top: -40px;
-        background-color: $light-divider;
         left: 0;
         opacity: 0.5;
       }
@@ -189,6 +189,10 @@ button {
       }
     }
   }
+}
+
+.divider {
+  background-color: $light-divider;
 }
 
 .github-link {
@@ -216,5 +220,9 @@ button {
   select {
     color: $dark-color;
     background-color: $dark-input-bg;
+  }
+
+  .divider {
+    background-color: $dark-divider;
   }
 }
