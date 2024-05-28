@@ -1,35 +1,34 @@
-import { useMemo } from "preact/hooks";
-import cronstrue from "cronstrue";
+import cronstrue from 'cronstrue'
+import { useMemo } from 'preact/hooks'
 
-export const useCronHumanText = (cronString: string) => {
-  return useMemo(() => {
-    let isValid = false;
-    let humanReadableDescription = "";
+const getHumanReadableDescription = (cronString: string) => {
+  if (!cronString) {
+    return { description: '', isValid: false }
+  }
+  try {
+    return { description: cronstrue.toString(cronString), isValid: true }
+  } catch (error) {
+    return { description: error.replace('Error: ', ''), isValid: false }
+  }
+}
+
+export const useCronHumanText = (cronString: string) =>
+  useMemo(() => {
+    let isValid = false
+    let humanReadableDescription = ''
 
     try {
       // Get human readable description
       const { isValid: isValidHumanReadableDescription, description } =
-        getHumanReadableDescription(cronString);
-      humanReadableDescription = description;
-      isValid = isValidHumanReadableDescription;
+        getHumanReadableDescription(cronString)
+      humanReadableDescription = description
+      isValid = isValidHumanReadableDescription
     } catch (error) {
-      console.error(error);
+      // Do nothing
     }
 
     return {
-      isValid,
       humanReadableDescription,
-    };
-  }, [cronString]);
-};
-
-const getHumanReadableDescription = (cronString: string) => {
-  if (!cronString) {
-    return { isValid: false, description: "" };
-  }
-  try {
-    return { isValid: true, description: cronstrue.toString(cronString) };
-  } catch (error) {
-    return { isValid: false, description: error.replace("Error: ", "") };
-  }
-};
+      isValid,
+    }
+  }, [cronString])

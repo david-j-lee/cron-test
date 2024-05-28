@@ -1,10 +1,20 @@
+$light-color: #222;
+$light-bg: #f3f3f3;
+$light-input-bg: #ddd;
+$light-divider: #777;
+
+$dark-color: #f3f3f3;
+$dark-bg: #1a1a1a;
+$dark-input-bg: #080808;
+$dark-divider: #333;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color: #222;
-  background-color: #ffffff;
+  color: $light-color;
+  background-color: $light-bg;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,7 +35,8 @@ select {
   padding: 8px 16px;
   font-size: 1rem;
   border-radius: 16px;
-  background-color: #080808;
+  color: $light-color;
+  background-color: $light-input-bg;
 }
 
 button {
@@ -38,7 +49,8 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1a1a1a;
+  color: $light-color;
+  background-color: $light-input-bg;
 
   &:hover {
     opacity: 1;
@@ -57,9 +69,18 @@ button {
 }
 
 .cron-input-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-end;
+  margin: 8px;
   max-width: 600px;
   width: 100%;
-  margin: 8px;
+
+  button {
+    margin: 8px 0;
+  }
 
   .cron-input {
     width: 100%;
@@ -151,7 +172,7 @@ button {
         width: 1px;
         height: 32px;
         margin-top: -40px;
-        background-color: #ccc;
+        background-color: $light-divider;
         left: 0;
         opacity: 0.5;
       }
@@ -170,9 +191,30 @@ button {
   }
 }
 
+.github-link {
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  padding: 8px;
+
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #ccc;
-    background-color: #1a1a1a;
+    color: $dark-color;
+    background-color: $dark-bg;
+  }
+
+  button,
+  input,
+  select {
+    color: $dark-color;
+    background-color: $dark-input-bg;
   }
 }

@@ -1,7 +1,7 @@
 type Props = {
-  description: string;
-};
+  description: string
+}
 
 export default function CronReader({ description }: Props) {
-  return <div class="description">{description || "Input a cron string"}</div>;
+  return <div class="description">{description || 'Input a cron string'}</div>
 }
