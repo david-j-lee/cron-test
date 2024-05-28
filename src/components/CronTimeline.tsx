@@ -10,10 +10,14 @@ dayjs.extend(timezone);
 type Props = {
   date: dayjs.Dayjs;
   timeZones: string[];
-  dateTimes: dayjs.Dayjs[];
+  scheduledDateTimes: dayjs.Dayjs[];
 };
 
-export default function CronTimeline({ date, timeZones, dateTimes }: Props) {
+export default function CronTimeline({
+  date,
+  timeZones,
+  scheduledDateTimes,
+}: Props) {
   const [customTimeZone, setCustomTimeZone] = useState("");
 
   const cronSchedules = useMemo(() => {
@@ -23,9 +27,9 @@ export default function CronTimeline({ date, timeZones, dateTimes }: Props) {
         ...timeZones.map((zone) => ({ editable: false, zone })),
         { editable: true, zone: customTimeZone },
       ],
-      dateTimes
+      scheduledDateTimes
     );
-  }, [date, dateTimes, customTimeZone]);
+  }, [date, scheduledDateTimes, customTimeZone]);
 
   return (
     <div class="schedules">
@@ -87,9 +91,9 @@ type CronSchedule = {
 };
 
 const getSchedule = (
-  date: dayjs.Dayjs,
+  startDate: dayjs.Dayjs,
   timeZones: { editable: boolean; zone: string }[],
-  scheduledDates: dayjs.Dayjs[]
+  scheduledDateTimes: dayjs.Dayjs[]
 ) => {
   const schedules: CronSchedules[] = [];
   const currentHour = dayjs();
@@ -109,10 +113,10 @@ const getSchedule = (
     const zonedCurrentHour = currentHour.tz(timeZone.zone);
 
     for (let i = 0; i < 24; i++) {
-      const zonedHour = date.add(i, "hours").tz(timeZone.zone);
+      const zonedHour = startDate.add(i, "hours").tz(timeZone.zone);
       const zonedHourValue = zonedHour.format("H");
       const startOfDay = zonedHourValue === "0";
-      const hourSchedule = scheduledDates
+      const hourSchedule = scheduledDateTimes
         .filter((scheduledDate) =>
           scheduledDate.startOf("hour").isSame(zonedHour, "hour")
         )

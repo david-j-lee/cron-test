@@ -6,7 +6,7 @@ type Props = {
   setValue: (value: string) => void;
 };
 
-export default function CronInput({ value, setValue }: Props) {
+export default function CronStringInput({ value, setValue }: Props) {
   const handleCronStringInput = useCallback(
     (event: JSX.TargetedEvent<HTMLInputElement, InputEvent>) => {
       setValue(event.currentTarget.value);

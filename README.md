@@ -11,3 +11,8 @@ See it in action at [david-j-lee.github.io/cron-visualizer/](https://david-j-lee
 - `npm run build` - Builds for production, emitting to `dist/`
 
 - `npm run preview` - Starts a server at http://localhost:4173/ to test production build locally
+
+## TODO
+
+- [ ] Performance improvements
+  - [ ] Debounce user inputs

@@ -3,10 +3,11 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
-import CronInput from "./components/CronInput";
+import CronStringInput from "./components/CronStringInput";
 import CronReader from "./components/CronReader";
 import CronTimeline from "./components/CronTimeline";
-import { useCronVisualizer } from "./hooks/useCronVisualizer";
+import { useCronHumanText } from "./hooks/useCronHumanText";
+import { useCronScheduler } from "./hooks/useCronScheduler";
 import CronDateInput from "./components/CronDateInput";
 import CronSettingsInput, {
   CronSettings,
@@ -34,7 +35,8 @@ export default function App() {
       .startOf("day");
   }, [timelineDateInput, userTimeZone]);
 
-  const { humanReadableDescription, cronDateTimes } = useCronVisualizer(
+  const { humanReadableDescription } = useCronHumanText(cronString);
+  const { scheduledDateTimes } = useCronScheduler(
     cronString,
     cronSettings,
     timelineDate
@@ -43,7 +45,7 @@ export default function App() {
   return (
     <>
       <div class="cron-input-container">
-        <CronInput value={cronString} setValue={setCronString} />
+        <CronStringInput value={cronString} setValue={setCronString} />
         <CronSettingsInput value={cronSettings} setValue={setCronSettings} />
       </div>
       <CronReader description={humanReadableDescription} />
@@ -54,7 +56,7 @@ export default function App() {
       <CronTimeline
         date={timelineDate}
         timeZones={timeZones}
-        dateTimes={cronDateTimes}
+        scheduledDateTimes={scheduledDateTimes}
       />
     </>
   );

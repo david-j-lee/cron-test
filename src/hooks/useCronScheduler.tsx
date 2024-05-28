@@ -1,6 +1,5 @@
 import { useMemo } from "preact/hooks";
 import parser, { CronDate } from "cron-parser";
-import cronstrue from "cronstrue";
 import dayjs from "dayjs";
 import minMax from "dayjs/plugin/minMax";
 import utc from "dayjs/plugin/utc";
@@ -11,54 +10,37 @@ dayjs.extend(minMax);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const useCronVisualizer = (
+export const useCronScheduler = (
   cronString: string,
   cronSettings: CronSettings,
   timelineDate: dayjs.Dayjs
 ) => {
   return useMemo(() => {
     let isValid = false;
-    let humanReadableDescription = "";
-    let cronDateTimes = [];
-    const start = dayjs(timelineDate).startOf("day");
-    const end = timelineDate.endOf("day");
+    let scheduledDateTimes = [];
+    const timelineStart = dayjs(timelineDate).startOf("day");
+    const timelineEnd = timelineDate.endOf("day");
 
     try {
       // Get human readable description
-      const { isValid: isValidHumanReadableDescription, description } =
-        getHumanReadableDescription(cronString);
-      humanReadableDescription = description;
-
       const { isValid: isDateTimesValid, dateTimes } = getDateTimes(
         cronString,
         cronSettings.timeZone,
-        cronSettings.startDateTime?.tz(cronSettings.timeZone, true) || start,
-        end
+        cronSettings.startDateTime?.tz(cronSettings.timeZone, true) ||
+          timelineStart,
+        timelineEnd
       );
-      cronDateTimes = dateTimes;
-
-      isValid = isValidHumanReadableDescription && isDateTimesValid;
+      scheduledDateTimes = dateTimes;
+      isValid = isDateTimesValid;
     } catch (error) {
       console.error(error);
     }
 
     return {
-      isValidCronString: isValid,
-      humanReadableDescription,
-      cronDateTimes,
+      isValid,
+      scheduledDateTimes,
     };
   }, [cronString, cronSettings, timelineDate]);
-};
-
-const getHumanReadableDescription = (cronString: string) => {
-  if (!cronString) {
-    return { isValid: false, description: "" };
-  }
-  try {
-    return { isValid: true, description: cronstrue.toString(cronString) };
-  } catch (error) {
-    return { isValid: false, description: error.replace("Error: ", "") };
-  }
 };
 
 const getDateTimes = (
