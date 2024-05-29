@@ -162,26 +162,42 @@ export default function CronTimeline({
     [date, scheduledDateTimes, customTimeZone, timeZones]
   )
 
+  const totalScheduledEvents = useMemo(
+    () =>
+      cronSchedules[0].schedule.reduce(
+        (accumulator, schedule) => accumulator + schedule.scheduledDates.length,
+        0
+      ),
+    [cronSchedules]
+  )
+
   return (
-    <div class="schedules">
-      {cronSchedules &&
-        cronSchedules.map((cronSchedule) => (
-          <div key={cronSchedule.timeZone} class="schedule">
-            {!cronSchedule.timeZone || cronSchedule.timeZoneEditable ? (
-              <CronTimeZoneSelect
-                value={customTimeZone}
-                setValue={setCustomTimeZone}
-              />
-            ) : (
-              <div class="timezone">
-                {cronSchedule.timeZone.replace(forwardSlashRegex, ' / ')}
-              </div>
-            )}
-            {cronSchedule.schedule.map((item) => (
-              <TimelineSchedule key={item.date} schedule={item} />
-            ))}
-          </div>
-        ))}
-    </div>
+    <>
+      <div class="schedules">
+        {cronSchedules &&
+          cronSchedules.map((cronSchedule) => (
+            <div key={cronSchedule.timeZone} class="schedule">
+              {!cronSchedule.timeZone || cronSchedule.timeZoneEditable ? (
+                <CronTimeZoneSelect
+                  value={customTimeZone}
+                  setValue={setCustomTimeZone}
+                />
+              ) : (
+                <div class="timezone">
+                  {cronSchedule.timeZone.replace(forwardSlashRegex, ' / ')}
+                </div>
+              )}
+              {cronSchedule.schedule.map((item) => (
+                <TimelineSchedule key={item.date} schedule={item} />
+              ))}
+            </div>
+          ))}
+      </div>
+      {Boolean(totalScheduledEvents) && (
+        <div class="number-of-events">
+          Number of events scheduled: <span>{totalScheduledEvents}</span>
+        </div>
+      )}
+    </>
   )
 }

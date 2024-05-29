@@ -50,9 +50,9 @@
 
   input {
     width: 100%;
-    font-size: 3rem;
+    font-size: 2.5rem;
     border-radius: spacing(4);
-    padding: spacing(4) spacing(5);
+    padding: spacing(3) spacing(4);
   }
 
   button {
@@ -160,8 +160,17 @@
   width: 1px;
   padding: spacing(0);
   margin: spacing(0);
-  background-color: red;
+  background-color: #c13535;
   opacity: 0.6;
+}
+
+.number-of-events {
+  opacity: 0.6;
+  margin: spacing(2);
+
+  span {
+    color: #c13535;
+  }
 }
 
 .github-link {
