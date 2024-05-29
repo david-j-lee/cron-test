@@ -21,9 +21,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: npm ci and build
+      - name: npm ci, lint, and build
         run: |
           npm ci
+          npm run lint
           npm run build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
