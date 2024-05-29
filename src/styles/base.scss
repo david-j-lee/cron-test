@@ -1,0 +1,91 @@
+@use 'variables' as *;
+@use 'functions' as *;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: $light-color;
+  background-color: $light-bg;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 600px;
+}
+
+input,
+select {
+  border: none;
+  padding: spacing(2) spacing(3);
+  font-size: 1rem;
+  border-radius: spacing(2);
+  color: $light-color;
+  background-color: $light-input-bg;
+}
+
+button {
+  border: none;
+  padding: spacing(2);
+  margin: spacing(2); // TODO: Shouldn't be adding margin on base styles
+  cursor: pointer;
+  opacity: 0.8;
+  border-radius: spacing(3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $light-color;
+  background-color: $light-input-bg;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+svg {
+  fill: $light-color;
+}
+
+a {
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.divider {
+  background-color: $light-divider;
+}
+
+//
+// Dark Mode
+//
+
+:root.dark-mode {
+  color: $dark-color;
+  background-color: $dark-bg;
+
+  button,
+  input,
+  select {
+    color: $dark-color;
+    background-color: $dark-input-bg;
+  }
+
+  svg {
+    fill: $dark-color;
+  }
+
+  .divider {
+    background-color: $dark-divider;
+  }
+}

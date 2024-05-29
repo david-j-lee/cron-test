@@ -1,0 +1,18 @@
+@use 'sass:map';
+
+$spacing-map: (
+  0: 0,
+  1: 4px,
+  2: 8px,
+  3: 16px,
+  4: 32px,
+  5: 64px,
+);
+
+@function spacing($number) {
+  @if map-has-key($spacing-map, $number) {
+    @return map-get($spacing-map, $number);
+  } @else {
+    @error "Invalid number: #{$number}. Must be between 0 and 5.";
+  }
+}

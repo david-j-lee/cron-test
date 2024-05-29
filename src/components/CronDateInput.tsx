@@ -1,5 +1,5 @@
-import ChevronLeft from './ChevronLeft'
-import ChevronRight from './ChevronRight'
+import ChevronLeft from '../icons/ChevronLeft'
+import ChevronRight from '../icons/ChevronRight'
 import dayjs from 'dayjs'
 import { useCallback } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'

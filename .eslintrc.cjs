@@ -19,6 +19,7 @@ module.exports = {
   },
   rules: {
     'max-lines': 0,
+    'max-lines-per-function': ['error', 100],
     'max-statements': ['error', 15],
     'no-continue': 'off',
     'no-magic-numbers': 'off',

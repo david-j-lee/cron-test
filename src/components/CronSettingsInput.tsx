@@ -9,17 +9,12 @@ export type CronSettings = {
 }
 
 type Props = {
+  show: boolean
   value: CronSettings
   setValue: (value: CronSettings) => void
 }
 
-export default function CronSettingsInput({ value, setValue }: Props) {
-  const [show, setShow] = useState(false)
-
-  const toggleSettings = useCallback(() => {
-    setShow(!show)
-  }, [show, setShow])
-
+export default function CronSettingsInput({ show, value, setValue }: Props) {
   // Time Zone Settings
   const setTimeZone = useCallback(
     (timeZone: string) => {
@@ -37,27 +32,24 @@ export default function CronSettingsInput({ value, setValue }: Props) {
     [value, setValue]
   )
 
+  if (!show) {
+    return null
+  }
+
   return (
-    <>
-      {show && (
-        <div class="cron-settings">
-          <label>
-            <span>cron time zone</span>
-            <CronTimeZoneSelect value={value.timeZone} setValue={setTimeZone} />
-          </label>
-          <label>
-            <span>cron start date</span>
-            <input
-              type="datetime-local"
-              value={value.startDateTime?.format('YYYY-MM-DDTHH:mm') ?? ''}
-              onInput={handleStartDateInput}
-            />
-          </label>
-        </div>
-      )}
-      <button onClick={toggleSettings}>
-        {show ? 'hide additional settings' : 'show additional settings'}
-      </button>
-    </>
+    <div class="cron-settings">
+      <label>
+        <span>cron time zone</span>
+        <CronTimeZoneSelect value={value.timeZone} setValue={setTimeZone} />
+      </label>
+      <label>
+        <span>cron start date</span>
+        <input
+          type="datetime-local"
+          value={value.startDateTime?.format('YYYY-MM-DDTHH:mm') ?? ''}
+          onInput={handleStartDateInput}
+        />
+      </label>
+    </div>
   )
 }
