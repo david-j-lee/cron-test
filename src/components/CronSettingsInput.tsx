@@ -1,35 +1,38 @@
-import CronTimeZoneSelect from './CronTimeZoneSelect'
+import { CronSettings } from '../types/CronSettings'
+import TimeZoneSelect from './TimeZoneSelect'
 import dayjs from 'dayjs'
-import { useCallback, useState } from 'preact/hooks'
+import { useCallback } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'
-
-export type CronSettings = {
-  timeZone: string
-  startDateTime?: dayjs.Dayjs
-}
 
 type Props = {
   show: boolean
-  value: CronSettings
-  setValue: (value: CronSettings) => void
+  settings: CronSettings
+  setSettings: (settings: CronSettings) => void
 }
 
-export default function CronSettingsInput({ show, value, setValue }: Props) {
+export default function CronSettingsInput({
+  show,
+  settings,
+  setSettings,
+}: Props) {
   // Time Zone Settings
   const setTimeZone = useCallback(
     (timeZone: string) => {
-      setValue({ ...value, timeZone })
+      setSettings({ ...settings, timeZone })
     },
-    [value, setValue]
+    [settings, setSettings]
   )
 
   // Start Date Settings
   const handleStartDateInput = useCallback(
     (event: JSX.TargetedEvent<HTMLInputElement, InputEvent>) => {
-      const newValue = event.currentTarget.value
-      setValue({ ...value, startDateTime: newValue ? dayjs(newValue) : null })
+      const newStartDateTime = event.currentTarget.value
+      setSettings({
+        ...settings,
+        startDateTime: newStartDateTime ? dayjs(newStartDateTime) : null,
+      })
     },
-    [value, setValue]
+    [settings, setSettings]
   )
 
   if (!show) {
@@ -39,14 +42,17 @@ export default function CronSettingsInput({ show, value, setValue }: Props) {
   return (
     <div class="cron-settings">
       <label>
-        <span>cron time zone</span>
-        <CronTimeZoneSelect value={value.timeZone} setValue={setTimeZone} />
+        <span>time zone</span>
+        <TimeZoneSelect
+          timeZone={settings.timeZone}
+          setTimeZone={setTimeZone}
+        />
       </label>
       <label>
-        <span>cron start date</span>
+        <span>start date time</span>
         <input
           type="datetime-local"
-          value={value.startDateTime?.format('YYYY-MM-DDTHH:mm') ?? ''}
+          value={settings.startDateTime?.format('YYYY-MM-DDTHH:mm') ?? ''}
           onInput={handleStartDateInput}
         />
       </label>

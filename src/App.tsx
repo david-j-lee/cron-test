@@ -1,12 +1,11 @@
-import CronDateInput from './components/CronDateInput'
-import CronReader from './components/CronReader'
-import CronSettingsInput, { CronSettings } from './components/CronSettingsInput'
+import CronSettingsInput from './components/CronSettingsInput'
 import CronStringInput from './components/CronStringInput'
-import CronTimeline from './components/CronTimeline'
+import DateInput from './components/DateInput'
 import GitHubLink from './components/GitHubLink'
+import ReadableDescription from './components/ReadableDescription'
 import ThemePicker from './components/ThemePicker'
-import { useCronHumanText } from './hooks/useCronHumanText'
-import { useCronScheduler } from './hooks/useCronScheduler'
+import TimelineGraphs from './components/TimelineGraphs'
+import { CronSettings } from './types/CronSettings'
 import dayjs from 'dayjs'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
@@ -35,13 +34,6 @@ export default function App() {
     [timelineDateInput, userTimeZone]
   )
 
-  const { humanReadableDescription } = useCronHumanText(cronString)
-  const { scheduledDateTimes } = useCronScheduler(
-    cronString,
-    cronSettings,
-    timelineDate
-  )
-
   const toggleShowCronSettings = useCallback(() => {
     setShowCronSettings(!showCronSettings)
   }, [showCronSettings, setShowCronSettings])
@@ -51,25 +43,23 @@ export default function App() {
       <ThemePicker />
       <div class="cron-input-container">
         <CronStringInput
-          value={cronString}
-          setValue={setCronString}
+          cronString={cronString}
+          setCronString={setCronString}
           toggleShowCronSettings={toggleShowCronSettings}
         />
         <CronSettingsInput
-          value={cronSettings}
-          setValue={setCronSettings}
+          settings={cronSettings}
+          setSettings={setCronSettings}
           show={showCronSettings}
         />
       </div>
-      <CronReader description={humanReadableDescription} />
-      <CronDateInput
-        value={timelineDateInput}
-        setValue={setTimelineDateInput}
-      />
-      <CronTimeline
+      <ReadableDescription cronString={cronString} />
+      <DateInput date={timelineDateInput} setDate={setTimelineDateInput} />
+      <TimelineGraphs
+        cronString={cronString}
+        cronSettings={cronSettings}
         date={timelineDate}
         timeZones={timeZones}
-        scheduledDateTimes={scheduledDateTimes}
       />
       <GitHubLink />
     </>

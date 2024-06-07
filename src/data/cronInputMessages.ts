@@ -1,6 +1,4 @@
-import { useMemo } from 'preact/hooks'
-
-const possibleInputPlaceholderText = [
+export const cronInputMessages = [
   'Ready to automate? Enter your cron string and watch the magic happen!',
   'Input your cron string and let us do the scheduling for you!',
   "Feed me a cron string, and I'll show you your schedule!",
@@ -12,18 +10,3 @@ const possibleInputPlaceholderText = [
   'Curious about your schedule? Input a cron string and find out!',
   'Unlock the power of automation! Enter your cron string here.',
 ]
-
-type Props = {
-  description: string
-}
-
-export default function CronReader({ description }: Props) {
-  const inputPlaceholderText = useMemo(
-    () =>
-      possibleInputPlaceholderText[
-        Math.floor(Math.random() * possibleInputPlaceholderText.length)
-      ],
-    []
-  )
-  return <div class="description">{description || inputPlaceholderText}</div>
-}

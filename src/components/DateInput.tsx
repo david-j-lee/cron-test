@@ -5,32 +5,32 @@ import { useCallback } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'
 
 type Props = {
-  value: string
-  setValue: (value: string) => void
+  date: string
+  setDate: (date: string) => void
 }
 
-export default function CronDateInput({ value, setValue }: Props) {
+export default function DateInput({ date, setDate }: Props) {
   const handleValueInput = useCallback(
     (event: JSX.TargetedEvent<HTMLInputElement, InputEvent>) => {
-      setValue(event.currentTarget.value)
+      setDate(event.currentTarget.value)
     },
-    [setValue]
+    [setDate]
   )
 
   const handleDateInputPrev = useCallback(() => {
-    setValue(dayjs(value).add(-1, 'day').format('YYYY-MM-DD'))
-  }, [value, setValue])
+    setDate(dayjs(date).add(-1, 'day').format('YYYY-MM-DD'))
+  }, [date, setDate])
 
   const handleDateInputNext = useCallback(() => {
-    setValue(dayjs(value).add(1, 'day').format('YYYY-MM-DD'))
-  }, [value, setValue])
+    setDate(dayjs(date).add(1, 'day').format('YYYY-MM-DD'))
+  }, [date, setDate])
 
   return (
     <div class="date-input-container">
       <button onClick={handleDateInputPrev}>
         <ChevronLeft />
       </button>
-      <input type="date" value={value} onInput={handleValueInput} />
+      <input type="date" value={date} onInput={handleValueInput} />
       <button onClick={handleDateInputNext}>
         <ChevronRight />
       </button>
